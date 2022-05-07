@@ -20,9 +20,9 @@ public class QueueConfig {
     @Resource(name = "defaultRabbitAdmin")
     private RabbitAdmin defaultRabbitAdmin;
 
-    private static final String topicQueue = "topic.default.queue";
-    private static final String topicExchange = "topic.default.exchange";
-    private static final String topicRouteKey = "topic.default.route";
+    protected static final String topicQueue = "topic.default.queue";
+    protected static final String topicExchange = "topic.default.exchange";
+    protected static final String topicRouteKey = "topic.default.route";
 
     @PostConstruct
     public void topicQueue() {
