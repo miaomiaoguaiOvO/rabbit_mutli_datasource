@@ -1,0 +1,2 @@
+# rabbit_mutli_datasource
+rabbitmq多数据源配置
