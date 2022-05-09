@@ -67,14 +67,14 @@ public class RabbitConfig {
 
 
     /*==================================其他rabbitmq配置========================================*/
-    @Bean(name = "flowerConnectionFactory")
-    public CachingConnectionFactory flowerConnectionFactory(
-            @Value("${spring.rabbitmq.flower.host}") String host,
-            @Value("${spring.rabbitmq.flower.port}") int port,
-            @Value("${spring.rabbitmq.flower.username}") String username,
-            @Value("${spring.rabbitmq.flower.password}") String password,
-            @Value("${spring.rabbitmq.flower.connection-timeout}") int connectionTimeout,
-            @Value("${spring.rabbitmq.flower.virtual-host}") String virtualHost) {
+    @Bean(name = "followerConnectionFactory")
+    public CachingConnectionFactory followerConnectionFactory(
+            @Value("${spring.rabbitmq.follower.host}") String host,
+            @Value("${spring.rabbitmq.follower.port}") int port,
+            @Value("${spring.rabbitmq.follower.username}") String username,
+            @Value("${spring.rabbitmq.follower.password}") String password,
+            @Value("${spring.rabbitmq.follower.connection-timeout}") int connectionTimeout,
+            @Value("${spring.rabbitmq.follower.virtual-host}") String virtualHost) {
         CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
         connectionFactory.setHost(host);
         connectionFactory.setPort(port);
@@ -85,24 +85,24 @@ public class RabbitConfig {
         return connectionFactory;
     }
 
-    @Bean(name = "flowerContainerFactory")
-    public SimpleRabbitListenerContainerFactory flowerContainerFactory(@Qualifier("flowerConnectionFactory") ConnectionFactory connectionFactory,
-                                                                       @Value("${spring.rabbitmq.flower.listener.simple.acknowledge-mode}") String acknowledge) {
+    @Bean(name = "followerContainerFactory")
+    public SimpleRabbitListenerContainerFactory followerContainerFactory(@Qualifier("followerConnectionFactory") ConnectionFactory connectionFactory,
+                                                                       @Value("${spring.rabbitmq.follower.listener.simple.acknowledge-mode}") String acknowledge) {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
         factory.setAcknowledgeMode(AcknowledgeMode.valueOf(acknowledge.toUpperCase()));
         return factory;
     }
 
-    @Bean(name = "flowerRabbitAdmin")
-    public RabbitAdmin flowerRabbitAdmin(@Qualifier("flowerConnectionFactory") ConnectionFactory connectionFactory) {
+    @Bean(name = "followerRabbitAdmin")
+    public RabbitAdmin followerRabbitAdmin(@Qualifier("followerConnectionFactory") ConnectionFactory connectionFactory) {
         RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory);
         rabbitAdmin.setAutoStartup(true);
         return rabbitAdmin;
     }
 
-    @Bean(name = "flowerRabbitTemplate")
-    public RabbitTemplate flowerRabbitTemplate(@Qualifier("flowerConnectionFactory") ConnectionFactory connectionFactory) {
+    @Bean(name = "followerRabbitTemplate")
+    public RabbitTemplate followerRabbitTemplate(@Qualifier("followerConnectionFactory") ConnectionFactory connectionFactory) {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMandatory(false);
         return rabbitTemplate;
